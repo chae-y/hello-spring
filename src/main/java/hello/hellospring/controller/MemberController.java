@@ -4,8 +4,11 @@ import hello.hellospring.domain.Member;
 import hello.hellospring.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.List;
 
 @Controller //컨트롤러에서 외부요청을 받고 서비스에서 비즈니스 로직을 만들고 리파지토리에서 데이터를 저장하고 =>정형화되어있는 패턴 (컴포넌트 스캔 방법)
 public class MemberController {
@@ -31,5 +34,12 @@ public class MemberController {
         memberService.join(member);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/members")
+    public String list(Model model){
+        List<Member> members = memberService.findMembers();
+        model.addAttribute("members", members);
+        return "members/memberList";
     }
 }
